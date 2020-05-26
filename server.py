@@ -46,6 +46,7 @@ while listening:
         c.send(output.encode('utf-8'))
         data = c.recv(1024).decode('utf-8')
         data = {"action": data}
+        print("From Pi: {}".format(data))
     elif data["status"] == "Winner":
         output = 'Winner'
     elif data["status"] == "Loser":
