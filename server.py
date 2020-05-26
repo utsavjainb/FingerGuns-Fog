@@ -22,13 +22,15 @@ print("socket binded to %s" % (port))
 # put the socket into listening mode
 s.listen(5)
 print("socket is listening")
+c = None
 
 # a forever loop until we interrupt it or
 # an error occurs
 while listening:
     # Establish connection with client.
-    c, addr = s.accept()
-    print('Got connection from', addr)
+    if c is None:
+        c, addr = s.accept()
+        print('Got connection from', addr)
 
     # send message to Game Server with Client ID
     # get game status from game server
@@ -36,24 +38,26 @@ while listening:
     game_input = input("Game Server Response: ")
     data = {"status": game_input}
 
-    if data["status"] == "Waiting Opponent":
+    if data["status"] == "Waiting for Opponent":
         output = 'Waiting for Opponent'
+        c.send(output.encode('utf-8'))
     elif data["status"] == "Make Move":
         output = 'Make Move'
+        c.send(output.encode('utf-8'))
+        data = c.recv(1024).decode('utf-8')
+        data = {"action": data}
     elif data["status"] == "Winner":
         output = 'Winner'
     elif data["status"] == "Loser":
         output = 'Loser'
-    else:
-        output = 'Error: {}'.format(data["status"])
+        c.send(output.encode('utf-8'))
+    # else:
+    #     output = data["status"]
+    #     c.send(output.encode('utf-8'))
 
-    c.send(output.encode('utf-8'))
-
-    data = c.recv(1024).decode('utf-8')
-    data = {"action": data}
-    print("data is {}".format(data))
-    if data is None:
-        continue
-    elif data["action"] == "disconnect":
-        c.close()
+    # if data is None:
+    #     continue
+    # elif "action" in data.keys():
+    #     if data["action"] == "disconnect":
+    #         c.close()
 
