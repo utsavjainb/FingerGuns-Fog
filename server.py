@@ -49,6 +49,7 @@ while listening:
         print("From Pi: {}".format(data))
     elif data["status"] == "Winner":
         output = 'Winner'
+        c.send(output.encode('utf-8'))
     elif data["status"] == "Loser":
         output = 'Loser'
         c.send(output.encode('utf-8'))
