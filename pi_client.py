@@ -17,6 +17,9 @@ if not c:
     c, addr = s.accept()
     print("Got connection from ", addr)
 
+output = 'Waiting for Opponent'
+c.send(output.encode('utf-8'))
+pidata = c.recv(1024).decode('utf-8')
 
 app = Flask(__name__)
 
@@ -100,8 +103,14 @@ def playgame():
             pass
         if player.winner == player.pid:
             print("Won Game! :) ")
+            output = 'Winner'
+            c.send(output.encode('utf-8'))
+            pidata = c.recv(1024).decode('utf-8')
         else:
             print("Lost game! :( ")
+            output = 'Loser'
+            c.send(output.encode('utf-8'))
+            pidata = c.recv(1024).decode('utf-8')
         player.gameover = False
         player.winner = None
 
