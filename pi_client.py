@@ -17,9 +17,10 @@ if not c:
     c, addr = s.accept()
     print("Got connection from ", addr)
 
-output = 'Waiting for Opponent'
+output = {"status":"Waiting for Opponent"}
+output = json.dumps(output)
 c.send(output.encode('utf-8'))
-pidata = c.recv(1024).decode('utf-8')
+#pidata = c.recv(1024).decode('utf-8')
 
 app = Flask(__name__)
 
@@ -28,8 +29,8 @@ log.setLevel(logging.ERROR)
 
 moves = {"READY" : "0","RELOAD" : "1" ,"SHIELD" : "2" ,"SHOOT" : "3" }
 rmoves = {"0": "READY" ,  "1": "RELOAD" ,"2": "SHIELD", "3" :"SHOOT"}
-url = "http://127.0.0.1:8080/receiver"
-#url = "http://a1705e88.ngrok.io/receiver"
+#url = "http://127.0.0.1:8080/receiver"
+url = "http://ecc3ee75ac99.ngrok.io/receiver"
 #url = "https://nodal-figure-276104.wl.r.appspot.com/receiver"
 # url = "https://finger-guns-278401.wl.r.appspot.com/receiver"
 
@@ -51,7 +52,9 @@ def receiver():
         #get move from RPi
         #pmove = input("Enter your move: ")
         #pmove["move"] = getmove()  
-        output = 'Make Move'
+        #output = 'Make Move'
+        output = {"status":"Make Move","Round":data['roundnum'],"Bullet Count":data['bulletcnt'], "Opponent Move":rmoves[data['oppmove']]}
+        output = json.dumps(output)
         c.send(output.encode('utf-8'))
         pidata = c.recv(1024).decode('utf-8')
         #pidata = {"action": pidata}        
@@ -103,14 +106,16 @@ def playgame():
             pass
         if player.winner == player.pid:
             print("Won Game! :) ")
-            output = 'Winner'
+            output = {"status": "Winner"}
+            output = json.dumps(output)
             c.send(output.encode('utf-8'))
-            pidata = c.recv(1024).decode('utf-8')
+            #pidata = c.recv(1024).decode('utf-8')
         else:
             print("Lost game! :( ")
-            output = 'Loser'
+            output = {"status": "Loser"}
+            output = json.dumps(output)
             c.send(output.encode('utf-8'))
-            pidata = c.recv(1024).decode('utf-8')
+            #pidata = c.recv(1024).decode('utf-8')
         player.gameover = False
         player.winner = None
 
