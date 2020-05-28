@@ -105,13 +105,13 @@ def playgame():
             pass
         if player.winner == player.pid:
             print("Won Game! :) ")
-            output = {"status": "Winner"}
+            output = {"status": "Winner", "Round": 0, "Bullet Count": 0}
             output = json.dumps(output)
             c.send(output.encode('utf-8'))
             # pidata = c.recv(1024).decode('utf-8')
         else:
             print("Lost game! :( ")
-            output = {"status": "Loser"}
+            output = {"status": "Loser", "Round": 0, "Bullet Count": 0}
             output = json.dumps(output)
             c.send(output.encode('utf-8'))
             # pidata = c.recv(1024).decode('utf-8')
