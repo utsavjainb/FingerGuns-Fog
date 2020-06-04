@@ -1,1 +1,1 @@
-python3 player.py 2 8082 http://localhost:8082
+python3 pi_client.py 2 8082 http://4429e5c6.ngrok.io
