@@ -1,7 +1,6 @@
 # first of all import the socket library
-import socket
-import io
 import json
+import socket
 
 # next create a socket object
 s = socket.socket()
@@ -37,7 +36,7 @@ while listening:
     # get game status from game server
     # {status: "Waiting Opponent"}
     game_input = input("Game Server Response: ")
-    data = {"status": game_input, "Round": 1, "Bullet Count": 1}
+    data = {"status": game_input, "Round": 1, "Bullet Count": 1, "Player Move": "SHOOT", "Opp Move": "RELOAD"}
 
     if data["status"] == "Waiting for Opponent":
         output = json.dumps(data)
