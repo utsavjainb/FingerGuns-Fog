@@ -33,9 +33,9 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 moves = {"READY": "0", "RELOAD": "1", "SHIELD": "2", "SHOOT": "3"}
-rmoves = {"0": "READY", "1": "RELOAD", "2": "SHIELD", "3": "SHOOT"}
+rmoves = {"0": "READY", "1": "RELOAD", "2": "SHIELD", "3": "SHOOT", "False": ''}
 # url = "http://127.0.0.1:8080/receiver"
-url = "http://ecc3ee75ac99.ngrok.io/receiver"
+url = "http://fbbee390376e.ngrok.io/receiver"
 
 
 # url = "https://nodal-figure-276104.wl.r.appspot.com/receiver"
@@ -60,7 +60,11 @@ def receiver():
         # pmove = input("Enter your move: ")
         # pmove["move"] = getmove()
         # output = 'Make Move'
-        if 'pmove' in data.keys():
+        print(data)
+        print("--------")
+        if 'pmove' in data:
+            print("pmoves is there")
+            print(rmoves[data['pmove']])
             output = {"status": "Make Move", "Round": data['roundnum'], "Bullet Count": data['bulletcnt'],
                       "Player Move": rmoves[data['pmove']], "Opp Move": rmoves[data['oppmove']]}
         else:
