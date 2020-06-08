@@ -34,7 +34,6 @@ log.setLevel(logging.ERROR)
 
 moves = {"READY": "0", "RELOAD": "1", "SHIELD": "2", "SHOOT": "3"}
 rmoves = {"0": "READY", "1": "RELOAD", "2": "SHIELD", "3": "SHOOT", "False": ''}
-personal_stats = {"RELOAD": 0, "SHIELD": 0, "SHOOT": 0}
 
 # url = "http://127.0.0.1:8080/receiver"
 url = "http://0ef5125001da.ngrok.io/receiver"
@@ -75,7 +74,6 @@ def receiver():
         # pidata = {"action": pidata}
 
         packet["move"] = pidata
-        personal_stats[rmoves[pidata]] += 1
 
         # packet["move"] = pmove
         return jsonify(packet)
@@ -87,9 +85,15 @@ def receiver():
         return jsonify(packet)
 
     elif data['msg'] == "GAMEOVER":
+        print("INSIDE GAMEOVER")
+        print(data)
         packet = {"pid": player.pid, "msg": "game over ack"}
-        player.stats["PStats"] = data["PStats"]
-        player.stats["OppStats"] = data["OppStats"]
+        player.stats["PStats"]["RELOAD"] = data["P_RELOAD"]
+        player.stats["PStats"]["SHIELD"] = data["P_SHIELD"]
+        player.stats["PStats"]["SHOOT"] = data["P_SHOOT"]
+        player.stats["OppStats"]["RELOAD"] = data["O_RELOAD"]
+        player.stats["OppStats"]["SHIELD"] = data["O_SHIELD"]
+        player.stats["OppStats"]["SHOOT"] = data["O_SHOOT"]
         player.winner = data['winner']
         player.gameover = True
 
