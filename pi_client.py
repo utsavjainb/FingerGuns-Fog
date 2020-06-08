@@ -50,7 +50,7 @@ class Player:
         self.purl = ""
         self.gameover = False
         self.winner = None
-        self.stats = dict()
+        self.stats = {"PStats": '', "OppStats": ''}
 
 
 @app.route('/receiver', methods=['POST'])
@@ -90,7 +90,8 @@ def receiver():
         packet = {"pid": player.pid, "msg": "game over ack"}
         player.gameover = True
         player.winner = data['winner']
-        player.stats = {"PStats": data["PStats"], "OppStats": data["OppStats"]}
+        player.stats["PStats"] = data["PStats"]
+        player.stats["OppStats"] = data["OppStats"]
 
         return jsonify(packet)
     return "OK"
