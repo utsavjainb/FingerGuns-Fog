@@ -88,9 +88,9 @@ def receiver():
 
     elif data['msg'] == "GAMEOVER":
         packet = {"pid": player.pid, "msg": "game over ack"}
-        player.gameover = True
         player.stats["PStats"] = data["PStats"]
         player.stats["OppStats"] = data["OppStats"]
+        player.gameover = True
         player.winner = data['winner']
 
         return jsonify(packet)
