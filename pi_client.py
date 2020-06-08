@@ -49,7 +49,7 @@ class Player:
         self.purl = ""
         self.gameover = False
         self.winner = None
-        self.stats = {"PStats": '', "OppStats": ''}
+        self.stats = {"PStats": dict(), "OppStats": dict()}
 
 
 @app.route('/receiver', methods=['POST'])
@@ -88,12 +88,12 @@ def receiver():
         print("INSIDE GAMEOVER")
         print(data)
         packet = {"pid": player.pid, "msg": "game over ack"}
-        player.stats["PStats"]["RELOAD"] = data["P_RELOAD"]
-        player.stats["PStats"]["SHIELD"] = data["P_SHIELD"]
-        player.stats["PStats"]["SHOOT"] = data["P_SHOOT"]
-        player.stats["OppStats"]["RELOAD"] = data["O_RELOAD"]
-        player.stats["OppStats"]["SHIELD"] = data["O_SHIELD"]
-        player.stats["OppStats"]["SHOOT"] = data["O_SHOOT"]
+        player.stats["PStats"]["RELOAD"] = int(data["P_RELOAD"])
+        player.stats["PStats"]["SHIELD"] = int(data["P_SHIELD"])
+        player.stats["PStats"]["SHOOT"] = int(data["P_SHOOT"])
+        player.stats["OppStats"]["RELOAD"] = int(data["O_RELOAD"])
+        player.stats["OppStats"]["SHIELD"] = int(data["O_SHIELD"])
+        player.stats["OppStats"]["SHOOT"] = int(data["O_SHOOT"])
         player.winner = data['winner']
         player.gameover = True
 
