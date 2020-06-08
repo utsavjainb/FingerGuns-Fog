@@ -50,6 +50,7 @@ class Player:
         self.purl = ""
         self.gameover = False
         self.winner = None
+        self.stats = dict()
 
 
 @app.route('/receiver', methods=['POST'])
