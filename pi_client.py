@@ -89,6 +89,8 @@ def receiver():
         packet = {"pid": player.pid, "msg": "game over ack"}
         player.gameover = True
         player.winner = data['winner']
+        player.stats = {"PStats": data["PStats"], "OppStats": data["OppStats"]}
+
         return jsonify(packet)
     return "OK"
 
@@ -118,13 +120,15 @@ def playgame():
             pass
         if player.winner == player.pid:
             print("Won Game! :) ")
-            output = {"status": "Winner", "Round": 0, "Bullet Count": 0, "Player Move": '', "Opp Move": ''}
+            output = {"status": "Winner", "Round": 0, "Bullet Count": 0, "Player Move": '', "Opp Move": '',
+                      "PStats": player.stats["PStats"], "OppStats": player.stats["OppStats"]}
             output = json.dumps(output)
             c.send(output.encode('utf-8'))
             # pidata = c.recv(1024).decode('utf-8')
         else:
             print("Lost game! :( ")
-            output = {"status": "Loser", "Round": 0, "Bullet Count": 0, "Player Move": '', "Opp Move": ''}
+            output = {"status": "Loser", "Round": 0, "Bullet Count": 0, "Player Move": '', "Opp Move": '',
+                      "PStats": player.stats["PStats"], "OppStats": player.stats["OppStats"]}
             output = json.dumps(output)
             c.send(output.encode('utf-8'))
             # pidata = c.recv(1024).decode('utf-8')
