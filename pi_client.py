@@ -33,9 +33,11 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 moves = {"READY": "0", "RELOAD": "1", "SHIELD": "2", "SHOOT": "3"}
-rmoves = {"0": "READY", "1": "RELOAD", "2": "SHIELD", "3": "SHOOT"}
+rmoves = {"0": "READY", "1": "RELOAD", "2": "SHIELD", "3": "SHOOT", "False": ''}
+personal_stats = {"RELOAD": 0, "SHIELD": 0, "SHOOT": 0}
+
 # url = "http://127.0.0.1:8080/receiver"
-url = "http://ecc3ee75ac99.ngrok.io/receiver"
+url = "http://fbbee390376e.ngrok.io/receiver"
 
 
 # url = "https://nodal-figure-276104.wl.r.appspot.com/receiver"
@@ -72,6 +74,7 @@ def receiver():
         # pidata = {"action": pidata}
 
         packet["move"] = pidata
+        personal_stats[rmoves[pidata]] += 1
 
         # packet["move"] = pmove
         return jsonify(packet)
